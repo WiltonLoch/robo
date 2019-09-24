@@ -68,10 +68,11 @@ int main(int argc, char **argv){
 			if (event.type == sf::Event::Closed) window.close();
 		}       	
 		desenhar(matriz, robo, window);
-		for(int i = 1; i < 5; i++) robo.adicionarMovimento(1);
-		robo.mover();
-		robo.calcDistanciaFabricas();
-		robo.relatorioCusto();
+		robo.definirDestino(35, 35, matriz);
+		/* for(int i = 1; i < 5; i++) robo.adicionarMovimento(3); */
+		robo.seguirCaminho(matriz);
+		/* robo.calcDistanciaFabricas(); */
+		/* robo.relatorioCusto(); */
 		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	}	
 

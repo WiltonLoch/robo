@@ -8,6 +8,7 @@
 #include <random>
 #include <utility>
 #include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -25,13 +26,15 @@ using namespace std;
 #define FERRAMENTA_3 203
 #define FERRAMENTA_4 204
 
+typedef tuple<int, int, int, float> no;
+
 class Robo{
     private:
         int xAtual;
         int yAtual;
-	int custo_caminho;
+	int custoAtual;
 	int raio;
-	queue<int> caminho;
+	stack<int> caminho;
 	vector<int> ferramentas;
 	vector<tuple<int, int, int, float>> fabricas;
         mt19937 geradorRandom;
@@ -45,13 +48,15 @@ class Robo{
 	int getX();
 	int getY();
 
-	void mover();
+	void mover(int &x, int &y, int direcao);
 	void adicionarMovimento(int direcao);
-	queue<int> aEstrela(int xDest, int yDest, vector<vector<int>> &matriz);
+	void definirDestino(int x, int y, vector<vector<int>> &matriz);
+	void seguirCaminho(vector<vector<int>> &matriz);
+	stack<int> aEstrela(int xDest, int yDest, vector<vector<int>> &matriz);
 
 	bool escanear(vector<vector<int>> &matriz);
 
-	float calcDistancia(int xDest, int yDest);
+	float calcDistancia(int xOrig, int yOrig, int xDest, int yDest);
 	void calcDistanciaFabricas();
 
         void relatorioCusto();
