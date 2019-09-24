@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 #include <random>
+#include <utility>
+#include <queue>
 
 using namespace std;
 
@@ -27,9 +29,11 @@ class Robo{
     private:
         int xAtual;
         int yAtual;
-	int custo;
+	int custo_caminho;
+	int raio;
+	queue<int> caminho;
 	vector<int> ferramentas;
-	vector<tuple<int, int, int, int>> fabricas;
+	vector<tuple<int, int, int, float>> fabricas;
         mt19937 geradorRandom;
 
     public:
@@ -42,8 +46,13 @@ class Robo{
 	int getY();
 
 	void mover();
+	void adicionarMovimento(int direcao);
+	queue<int> aEstrela(int xDest, int yDest, vector<vector<int>> &matriz);
 
-	void calcDistancias();
+	bool escanear(vector<vector<int>> &matriz);
+
+	float calcDistancia(int xDest, int yDest);
+	void calcDistanciaFabricas();
 
         void relatorioCusto();
 
