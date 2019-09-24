@@ -57,19 +57,20 @@ stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
 	do{
 		no direcao_frontal = arvore.top();
 		if(get<0>(direcao_frontal) == xDest && get<1>(direcao_frontal) == yDest) break;
-		/* cout << get<0>(direcao_frontal) << " " << get<1>(direcao_frontal) << " " << get<3>(direcao_frontal) << endl; */
+		cout << get<0>(direcao_frontal) << " " << get<1>(direcao_frontal) << " " << get<3>(direcao_frontal) << endl;
 		/* std::this_thread::sleep_for(std::chrono::milliseconds(300)); */
 		arvore.pop();
 		for(int i = 0; i < 4; i++){
 			int tmp_x = get<0>(direcao_frontal);	
 			int tmp_y = get<1>(direcao_frontal);	
+			float custo_acumulado = filtrarCusto(tmp_x, tmp_y, matriz) - calcDistancia(tmp_x, tmp_y, xDest, yDest);
 			mover(tmp_x, tmp_y, i);
 			if(tmp_x < 0 or tmp_x >= matriz.size()) continue;
 			if(tmp_y < 0 or tmp_y >= matriz.size()) continue;
 			if(visitados[make_pair(tmp_x, tmp_y)]) continue;
 			visitados[make_pair(tmp_x, tmp_y)] = true;
 			
-			float distancia = calcDistancia(tmp_x, tmp_y, xDest, yDest) + filtrarCusto(tmp_x, tmp_y, matriz); 
+			float distancia = custo_acumulado + calcDistancia(tmp_x, tmp_y, xDest, yDest) + filtrarCusto(tmp_x, tmp_y, matriz); 
 
 			arvore.push(make_tuple(tmp_x, tmp_y, movimentos.size(), distancia));
 

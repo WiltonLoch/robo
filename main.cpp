@@ -59,7 +59,7 @@ int main(int argc, char **argv){
 	posicionarFabricas(argv[2], matriz, robo);
 	posicionarFerramentas(matriz);
 	robo.calcDistanciaFabricas();
-	robo.definirDestino(4, 36, matriz);
+	robo.definirDestino(40, 35, matriz);
 
 	sf::RenderWindow window(sf::VideoMode(TAMANHO_JANELA, TAMANHO_JANELA), "Robo");   
 
