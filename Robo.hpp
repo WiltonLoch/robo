@@ -41,6 +41,8 @@ class Robo{
 	int getX();
 	int getY();
 
+	void mover();
+
 	void calcDistancias();
 
         void relatorioCusto();

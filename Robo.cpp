@@ -9,6 +9,7 @@ Robo::~Robo(){}
 
 Robo::Robo(){
     this->custo = 0;
+    this->raio = 4;
     this->geradorRandom = mt19937(random_device{}());
 }
 
@@ -17,6 +18,7 @@ Robo::Robo(int x, int y){
     this->xAtual = x;
     this->yAtual = y;
     this->custo = 0;
+    this->raio = 4;
     this->geradorRandom = mt19937(random_device{}());
 }
 
@@ -27,6 +29,24 @@ int Robo::getX(){
 int Robo::getY(){
 	return this->yAtual;
 }
+
+bool Robo::escanear(){
+	int soma_vizinhos = 0;
+	int limite_inferior_x = (xAtual - raio >= 0 ? -raio : 0); 
+	int limite_superior_x = (xAtual + raio + 1 < matriz.size() ? raio + 1 : matriz.size() - 1);
+	int limite_inferior_y = (yAtual - raio >= 0 ? -raio : 0); 
+	int limite_superior_y = (yAtual + raio + 1 < matriz.size() ? raio + 1 : matriz.size() - 1);
+	for (int i = limite_inferior_x; i < limite_superior_x; i++){
+		for (int j = limite_inferior_y; j < limite_inferior_y; j++){
+		}
+	}
+}
+
+
+void Robo::mover(){
+
+}
+
 
 void Robo::calcDistancias(){
 	for(auto& fabrica_atual : fabricas){
@@ -48,7 +68,8 @@ void Robo::relatorioCusto(){
 
 void Robo::pegar(vector<vector<int>> &matriz){
 	if(matriz[xAtual][yAtual] >= FERRAMENTA_0){
-		ferramentas[matriz[xAtual][yAtual]]++;		
+		ferramentas[matriz[xAtual][yAtual] - FERRAMENTA_0]++;		
+		matriz[xAtual][yAtual] = 1;
 	}	
 }
 	
