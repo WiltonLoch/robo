@@ -9,6 +9,11 @@ class comparaDistancias{
 	} 
 };
 
+int filtrarCusto(int x, int y, vector<vector<int>> &matriz){
+	int custo = matriz[x][y];
+	return custo >= FERRAMENTA_0 ? 1 : custo >= FABRICA_0 ? 0 : custo;
+}
+
 Robo::~Robo(){}
 
 Robo::Robo(){}
@@ -45,25 +50,27 @@ bool Robo::escanear(vector<vector<int>> &matriz){
 }
 
 stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
+	map<pair<int, int>, bool> visitados;
 	vector<pair<int, int>> movimentos;
 	priority_queue<no, vector<no>, comparaDistancias> arvore;
 	arvore.push(make_tuple(xAtual, yAtual, -1, calcDistancia(xAtual, yAtual, xDest, yDest)));
 	do{
 		no direcao_frontal = arvore.top();
 		if(get<0>(direcao_frontal) == xDest && get<1>(direcao_frontal) == yDest) break;
-		cout << get<0>(direcao_frontal) << " " << get<1>(direcao_frontal) << " " << get<3>(direcao_frontal) << endl;
-		std::this_thread::sleep_for(std::chrono::milliseconds(300));
+		/* cout << get<0>(direcao_frontal) << " " << get<1>(direcao_frontal) << " " << get<3>(direcao_frontal) << endl; */
+		/* std::this_thread::sleep_for(std::chrono::milliseconds(300)); */
 		arvore.pop();
 		for(int i = 0; i < 4; i++){
-			if(movimentos.size() > 0) if((i + 2) % 4 == movimentos[get<2>(direcao_frontal)].first) continue;
 			int tmp_x = get<0>(direcao_frontal);	
 			int tmp_y = get<1>(direcao_frontal);	
 			mover(tmp_x, tmp_y, i);
+			if(tmp_x < 0 or tmp_x >= matriz.size()) continue;
+			if(tmp_y < 0 or tmp_y >= matriz.size()) continue;
+			if(visitados[make_pair(tmp_x, tmp_y)]) continue;
+			visitados[make_pair(tmp_x, tmp_y)] = true;
+			
+			float distancia = calcDistancia(tmp_x, tmp_y, xDest, yDest) + filtrarCusto(tmp_x, tmp_y, matriz); 
 
-			int custo = matriz[tmp_x][tmp_y];
-			custo -= custo >= FERRAMENTA_0 ? FERRAMENTA_0 : custo >= FABRICA_0 ? FABRICA_0 : 0;
-
-			float distancia = calcDistancia(tmp_x, tmp_y, xDest, yDest) + custo; 
 			arvore.push(make_tuple(tmp_x, tmp_y, movimentos.size(), distancia));
 
 			movimentos.push_back(make_pair(i, get<2>(direcao_frontal))); 
@@ -106,7 +113,7 @@ void Robo::seguirCaminho(vector<vector<int>> &matriz){
 	int direcao = caminho.top();
 	caminho.pop();
 	mover(xAtual, yAtual, direcao);
-	custoAtual += matriz[xAtual][yAtual];
+	custoAtual += filtrarCusto(xAtual, yAtual, matriz); 
 }
 
 void Robo::adicionarMovimento(int direcao){
@@ -132,8 +139,8 @@ void Robo::calcDistanciaFabricas(){
 
 void Robo::relatorioCusto(){
 	cout << "custo atual: " << this->custoAtual << endl;
-	for(auto& fabrica_atual : fabricas) cout << get<3>(fabrica_atual) << " ";
-	cout << endl;
+	/* for(auto& fabrica_atual : fabricas) cout << get<3>(fabrica_atual) << " "; */
+	/* cout << endl; */
 }
 
 void Robo::pegar(vector<vector<int>> &matriz){

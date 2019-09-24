@@ -59,7 +59,8 @@ int main(int argc, char **argv){
 	posicionarFabricas(argv[2], matriz, robo);
 	posicionarFerramentas(matriz);
 	robo.calcDistanciaFabricas();
-	
+	robo.definirDestino(4, 36, matriz);
+
 	sf::RenderWindow window(sf::VideoMode(TAMANHO_JANELA, TAMANHO_JANELA), "Robo");   
 
 	while (window.isOpen()){  
@@ -68,11 +69,10 @@ int main(int argc, char **argv){
 			if (event.type == sf::Event::Closed) window.close();
 		}       	
 		desenhar(matriz, robo, window);
-		robo.definirDestino(35, 35, matriz);
 		/* for(int i = 1; i < 5; i++) robo.adicionarMovimento(3); */
 		robo.seguirCaminho(matriz);
 		/* robo.calcDistanciaFabricas(); */
-		/* robo.relatorioCusto(); */
+		robo.relatorioCusto();
 		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	}	
 
