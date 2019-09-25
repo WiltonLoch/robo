@@ -9,6 +9,14 @@ class comparaDistancias{
 	} 
 };
 
+bool comparaDistanciasFabricas(const tuple<int, int, int, float>& a, const tuple<int, int, int, float>& b){
+		return get<3>(a) < get<3>(b);
+}
+
+bool comparaDistanciasFerramentas(const tuple<int, int, float>& a, const tuple<int, int, float>& b){
+		return get<2>(a) < get<2>(b);
+}
+
 int filtrarCusto(int x, int y, vector<vector<int>> &matriz){
 	int custo = matriz[x][y];
 	return custo >= FERRAMENTA_0 ? 1 : custo >= FABRICA_0 ? 0 : custo;
@@ -25,7 +33,7 @@ Robo::Robo(int x, int y){
     this->custoAtual = 0;
     this->raio = 4;
     this->geradorRandom = mt19937(random_device{}());
-    this->ferramentas = vector<int>(5, 0);
+    this->ferramentasFaltando = vector<int>(5, 0);
 }
 
 int Robo::getX(){
@@ -43,25 +51,46 @@ bool Robo::escanear(vector<vector<int>> &matriz){
 	int limite_inferior_y = (yAtual - raio >= 0 ? -raio : 0); 
 	int limite_superior_y = (yAtual + raio + 1 < matriz.size() ? raio + 1 : matriz.size() - 1);
 	for (int i = limite_inferior_x; i < limite_superior_x; i++){
-		for (int j = limite_inferior_y; j < limite_inferior_y; j++){
-			/* if(matriz[i][j] >= FERRAMENTA_0) */
+		for (int j = limite_inferior_y; j < limite_superior_y; j++){
+			//	cout << i << " " << j << endl;
+			 if(matriz[xAtual + i][yAtual + j] >= FERRAMENTA_0 and !jaEscaneada(xAtual + i, yAtual + j)){
+					ferramentasEscaneadas.push_back(make_tuple(xAtual + i, yAtual + j, calcDistancia(xAtual, yAtual, xAtual + i, yAtual + j)));
+			 } 
+			 
 		}
 	}
+	if(!ferramentasEscaneadas.empty()){
+		cout << get<0>(ferramentasEscaneadas[0]) << " " << get<1>(ferramentasEscaneadas[0]) << endl;
+		sort(ferramentasEscaneadas.begin(), ferramentasEscaneadas.end(), comparaDistanciasFerramentas);		
+		definirDestino(get<0>(ferramentasEscaneadas[0]), get<1>(ferramentasEscaneadas[0]), matriz);
+	}
+}
+
+bool Robo::jaEscaneada(int x, int y){
+	for(tuple<int, int, float> fer : ferramentasEscaneadas){
+		cout << "ccc" << endl;
+		if(get<0>(fer) == x and get<1>(fer) == y) return true;
+	}	
+	cout << "aaaa" << endl;	
+	return false;
 }
 
 stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
 	map<pair<int, int>, bool> visitados;
 	vector<pair<int, int>> movimentos;
 	priority_queue<no, vector<no>, comparaDistancias> arvore;
-	arvore.push(make_tuple(xAtual, yAtual, -1, calcDistancia(xAtual, yAtual, xDest, yDest)));
+	arvore.push(make_tuple(xAtual, yAtual, -1, calcDistancia(xAtual, yAtual, xDest, yDest)));	
 	do{
 		no direcao_frontal = arvore.top();
+		visitados[make_pair(get<0>(direcao_frontal), get<1>(direcao_frontal))] = true;
 		if(get<0>(direcao_frontal) == xDest && get<1>(direcao_frontal) == yDest) break;
-		/* cout << get<0>(direcao_frontal) << " " << get<1>(direcao_frontal) << " " << custo_acumulado << endl; */
+		
+		float custo_acumulado = get<3>(direcao_frontal) - calcDistancia(get<0>(direcao_frontal), get<1>(direcao_frontal), xDest, yDest);
+		
+		//cout << get<0>(direcao_frontal) << " " << get<1>(direcao_frontal) << " " << custo_acumulado << endl;
 		/* std::this_thread::sleep_for(std::chrono::milliseconds(100)); */
 		arvore.pop();
-
-		float custo_acumulado = get<3>(direcao_frontal) - calcDistancia(get<0>(direcao_frontal), get<1>(direcao_frontal), xDest, yDest);
+	
 
 		for(int i = 0; i < 4; i++){
 			int tmp_x = get<0>(direcao_frontal);	
@@ -98,6 +127,11 @@ void Robo::definirDestino(int x, int y, vector<vector<int>> &matriz){
 	caminho = aEstrela(x, y, matriz);
 }
 
+void Robo::irParaFabrica(vector<vector<int>> &matriz){
+	calcDistanciaFabricas();
+	caminho = aEstrela(get<0>(fabricas[0]), get<1>(fabricas[0]), matriz);
+}
+
 void Robo::mover(int &x, int &y, int direcao){
 	/* -1  0 */
 	/*  0  1 */
@@ -117,7 +151,8 @@ void Robo::seguirCaminho(vector<vector<int>> &matriz){
 	int direcao = caminho.top();
 	caminho.pop();
 	mover(xAtual, yAtual, direcao);
-	custoAtual += filtrarCusto(xAtual, yAtual, matriz); 
+	pegar(matriz);
+	custoAtual += filtrarCusto(xAtual, yAtual, matriz);
 }
 
 void Robo::adicionarMovimento(int direcao){
@@ -138,7 +173,7 @@ void Robo::calcDistanciaFabricas(){
 	for(auto& fabrica_atual : fabricas){
 		get<3>(fabrica_atual) = calcDistancia(xAtual, yAtual, get<0>(fabrica_atual), get<1>(fabrica_atual));
 	}
-	sort(fabricas.begin(), fabricas.end(), comparaDistancias());
+	sort(fabricas.begin(), fabricas.end(), comparaDistanciasFabricas);
 }
 
 void Robo::relatorioCusto(){
@@ -147,11 +182,16 @@ void Robo::relatorioCusto(){
 	/* cout << endl; */
 }
 
+void Robo::setPedido(int indFabrica, int qtdFerramentas){
+		ferramentasFaltando[indFabrica] = qtdFerramentas;
+}
+
 void Robo::pegar(vector<vector<int>> &matriz){
 	if(matriz[xAtual][yAtual] >= FERRAMENTA_0){
-		ferramentas[matriz[xAtual][yAtual] - FERRAMENTA_0]++;		
+		ferramentasFaltando[matriz[xAtual][yAtual] - FERRAMENTA_0]--;		
 		matriz[xAtual][yAtual] = 1;
-	}	
+	}
+		
 }
 	
 void Robo::setLocalizacaoFabrica(int x, int y, int tipo){
