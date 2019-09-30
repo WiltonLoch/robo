@@ -59,13 +59,13 @@ int main(int argc, char **argv){
 	posicionarFabricas(argv[2], matriz, robo);
 	posicionarFerramentas(matriz);
 	robo.calcDistanciaFabricas();
-	//robo.setPedido(0, 8);
-	//robo.setPedido(1, 5);
-	//robo.setPedido(2, 2);
-	//robo.setPedido(3, 5);
-	//robo.setPedido(4, 2);
-	robo.definirDestino(1, 1, matriz);
-	//robo.irParaFabrica(matriz);
+	robo.setPedido(0, 8);
+	robo.setPedido(1, 5);
+	robo.setPedido(2, 2);
+	robo.setPedido(3, 5);
+	robo.setPedido(4, 2);
+	/* robo.definirDestino(1, 1, matriz); */
+	robo.irParaFabrica(matriz);
 
 	sf::RenderWindow window(sf::VideoMode(TAMANHO_JANELA, TAMANHO_JANELA), "Robo");   
 
@@ -76,9 +76,8 @@ int main(int argc, char **argv){
 		}   
 		   	
 		desenhar(matriz, robo, window);
-		/* for(int i = 1; i < 5; i++) robo.adicionarMovimento(3); */
+		robo.escanear(matriz);
 		robo.seguirCaminho(matriz);		
-	//	robo.escanear(matriz);
 		
 		/* robo.calcDistanciaFabricas(); */
 		robo.relatorioCusto();
@@ -141,7 +140,7 @@ void desenhar(vector<vector<int>> &matriz, Robo &robo, sf::RenderWindow &window)
 			grid[i][j].setPosition(j*cellSize.x, i*cellSize.y);
 			window.draw(grid[i][j]);
 			switch(matriz[i][j]){
-					case FERRAMENTA_0:
+				case FERRAMENTA_0:
 					ferramenta_desenhador.setFillColor(sf::Color::Red);
 					ferramenta_desenhador.setPosition(j*cellSize.x, i*cellSize.y);
 					window.draw(ferramenta_desenhador);
@@ -185,7 +184,7 @@ void posicionarFerramentas(vector<vector<int>> &matriz){
 			x = distribution(geradorRandom);
 			y = distribution(geradorRandom);
 		}while(matriz[x][y] != 1);
-		matriz[x][y] = contador / 4 == 0 ? FERRAMENTA_0 : contador / 10 == 0 ? FERRAMENTA_1 : contador / 18 == 0 ? FERRAMENTA_2 : contador / 28 == 0 ? FERRAMENTA_3 : FERRAMENTA_4;
+		matriz[x][y] = contador / 4 == 0 ? FERRAMENTA_4 : contador / 10 == 0 ? FERRAMENTA_3 : contador / 18 == 0 ? FERRAMENTA_2 : contador / 28 == 0 ? FERRAMENTA_1 : FERRAMENTA_0;
 		contador++;
 	}
 
