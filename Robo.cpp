@@ -91,7 +91,7 @@ stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
 			
 		float custo_acumulado = get<3>(direcao_frontal) - calcDistancia(get<0>(direcao_frontal), get<1>(direcao_frontal), xDest, yDest);
 		
-		/* printf("custo_acumulado %2f, distancia: %2f, total: %2f\n", custo_acumulado, calcDistancia(get<0>(direcao_frontal), get<1>(direcao_frontal), xDest, yDest), calcDistancia(get<0>(direcao_frontal), get<1>(direcao_frontal), xDest, yDest) + custo_acumulado); */
+		printf("custo_acumulado %2f, distancia: %2f, total: %2f\n", custo_acumulado, calcDistancia(get<0>(direcao_frontal), get<1>(direcao_frontal), xDest, yDest), calcDistancia(get<0>(direcao_frontal), get<1>(direcao_frontal), xDest, yDest) + custo_acumulado);
 		//cout << get<0>(direcao_frontal) << " " << get<1>(direcao_frontal) << " " << custo_acumulado << endl;
 		/* std::this_thread::sleep_for(std::chrono::milliseconds(100)); */
 		arvore.pop();
@@ -108,7 +108,7 @@ stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
 			visitados[make_pair(tmp_x, tmp_y)] = true;
 			
 			float distancia = custo_acumulado + calcDistancia(tmp_x, tmp_y, xDest, yDest) + filtrarCusto(tmp_x, tmp_y, matriz); 
-			/* printf("\tdirecao: %d, custo_acumulado %2f, distancia: %2f, total: %2f\n", i, custo_acumulado, distancia - custo_acumulado, distancia); */
+			printf("\tdirecao: %d, custo_acumulado %2f, distancia: %2f, total: %2f\n", i, custo_acumulado, distancia - custo_acumulado, distancia);
 
 			arvore.push(make_tuple(tmp_x, tmp_y, movimentos.size(), distancia));
 
