@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <chrono>
 #include <thread>
+
 class comparaDistancias{
 	public:
 	bool operator() (const tuple<int, int, int, float>& a, const tuple<int, int, int, float>& b) const {
@@ -76,6 +77,7 @@ bool Robo::jaEscaneada(int x, int y){
 }
 
 stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
+	int nos_expandidos = 0;
 	map<pair<int, int>, bool> visitados;
 	vector<pair<int, int>> movimentos;
 	priority_queue<no, vector<no>, comparaDistancias> arvore;
@@ -84,7 +86,9 @@ stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
 		no direcao_frontal = arvore.top();
 		visitados[make_pair(get<0>(direcao_frontal), get<1>(direcao_frontal))] = true;
 		if(get<0>(direcao_frontal) == xDest && get<1>(direcao_frontal) == yDest) break;
-		
+
+		nos_expandidos++;
+			
 		float custo_acumulado = get<3>(direcao_frontal) - calcDistancia(get<0>(direcao_frontal), get<1>(direcao_frontal), xDest, yDest);
 		
 		//cout << get<0>(direcao_frontal) << " " << get<1>(direcao_frontal) << " " << custo_acumulado << endl;
@@ -100,15 +104,18 @@ stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
 			if(tmp_x < 0 or tmp_x >= matriz.size()) continue;
 			if(tmp_y < 0 or tmp_y >= matriz.size()) continue;
 			if(visitados[make_pair(tmp_x, tmp_y)]) continue;
+
 			visitados[make_pair(tmp_x, tmp_y)] = true;
 			
 			float distancia = custo_acumulado + calcDistancia(tmp_x, tmp_y, xDest, yDest) + filtrarCusto(tmp_x, tmp_y, matriz); 
+			printf("custo_atual: %f\n", distancia);
 
 			arvore.push(make_tuple(tmp_x, tmp_y, movimentos.size(), distancia));
 
 			movimentos.push_back(make_pair(i, get<2>(direcao_frontal))); 
 		}
 	}while(!arvore.empty());
+	printf("tamanho arvore: %d\n", arvore.size());
 
 	stack<int> caminho;
 
@@ -119,6 +126,8 @@ stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
 		movimento_atual = movimentos[movimento_atual.second];
 	}
 	caminho.push(movimento_atual.first);	
+
+	printf("nós expandidos: %d\n", nos_expandidos);
 
 	return caminho;
 }
