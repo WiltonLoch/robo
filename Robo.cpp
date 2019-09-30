@@ -160,6 +160,7 @@ void Robo::seguirCaminho(vector<vector<int>> &matriz){
 	int direcao = caminho.top();
 	caminho.pop();
 	mover(xAtual, yAtual, direcao);
+	qtdMovimentos++;
 	pegar(matriz);
 	custoAtual += filtrarCusto(xAtual, yAtual, matriz);
 }
@@ -168,13 +169,8 @@ void Robo::adicionarMovimento(int direcao){
 	caminho.push(direcao);
 }
 
-float Robo::calcDistancia(int xOrig, int yOrig, int xDest, int yDest){
-    int xRet = xOrig - xDest;
-    xRet *= xRet;
-    int yRet = yOrig - yDest;
-    yRet *= yRet;
-
-    return sqrt(xRet + yRet);
+int Robo::calcDistancia(int xOrig, int yOrig, int xDest, int yDest){
+    return abs(xOrig - xDest) + abs(yOrig - yDest);
 }
 
 
@@ -186,7 +182,7 @@ void Robo::calcDistanciaFabricas(){
 }
 
 void Robo::relatorioCusto(){
-	cout << "custo atual: " << this->custoAtual << endl;
+	cout << "movimentos: " << qtdMovimentos << "custo atual: " << this->custoAtual << endl;
 	/* for(auto& fabrica_atual : fabricas) cout << get<3>(fabrica_atual) << " "; */
 	/* cout << endl; */
 }

@@ -35,6 +35,7 @@ class Robo{
         int yAtual;
 	int custoAtual;
 	int raio;
+	int qtdMovimentos;
 	stack<int> caminho;
 	vector<int> ferramentasFaltando;
 	vector<tuple<int, int, float>> ferramentasEscaneadas;
@@ -62,7 +63,7 @@ class Robo{
 	
 	void setPedido(int indFabrica, int qtdFerramentas);
 
-	float calcDistancia(int xOrig, int yOrig, int xDest, int yDest);
+	int calcDistancia(int xOrig, int yOrig, int xDest, int yDest);
 	void calcDistanciaFabricas();
 	void irParaFabrica(vector<vector<int>> &matriz);
 
