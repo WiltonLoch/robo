@@ -57,7 +57,7 @@ bool Robo::escanear(vector<vector<int>> &matriz){
 	for (int i = limite_inferior_x; i < limite_superior_x; i++){
 		for (int j = limite_inferior_y; j < limite_superior_y; j++){
 				/* cout << xAtual + i << " " << yAtual + j << endl; */
-			 if(matriz[xAtual + i][yAtual + j] >= FERRAMENTA_0 and !fabricasAtendidas[matriz[xAtual + i][yAtual + j] - FERRAMENTA_0]){
+			 if(matriz[xAtual + i][yAtual + j] >= FERRAMENTA_0 and ferramentasFaltando[matriz[xAtual + i][yAtual + j] - FERRAMENTA_0] > 0){
 					if(!jaEscaneada(xAtual + i, yAtual + j)) ferramentasEscaneadas.push_back(make_tuple(xAtual + i, yAtual + j, calcDistancia(xAtual, yAtual, xAtual + i, yAtual + j)));
 			 } 
 			 
@@ -76,7 +76,7 @@ bool Robo::jaEscaneada(int x, int y){
 
 void Robo::escolherDestino(vector<vector<int>> &matriz){
 	if(atendimento) return;
-	if(ferramentasEscaneadas.empty())for(int i = 0; i < ferramentasFaltando.size(); i++) 
+	if(ferramentasEscaneadas.empty()) for(int i = 0; i < ferramentasFaltando.size(); i++) 
 		if(ferramentasFaltando[i] <= 0 and !fabricasAtendidas[i]){
 			atendimento = true;
 			irParaFabrica(matriz, FABRICA_0 + i);	
@@ -88,17 +88,20 @@ void Robo::escolherDestino(vector<vector<int>> &matriz){
 		for(i = ferramentasEscaneadas.begin(); i != ferramentasEscaneadas.end(); i++) 
 			get<2>(*i) = calcDistancia(xAtual, yAtual, get<0>(*i), get<1>(*i));
 		sort(ferramentasEscaneadas.begin(), ferramentasEscaneadas.end(), comparaDistanciasFerramentas);		
+		for(i = ferramentasEscaneadas.begin(); i != ferramentasEscaneadas.end(); i++){
+			int tipo = matriz[get<0>(*i)][get<1>(*i)] - FERRAMENTA_0;
+			if(ferramentasFaltando[tipo] <= 0){
+		       		ferramentasEscaneadas.erase(i);
+				i--;
+			}
+		}
 		definirDestino(get<0>(ferramentasEscaneadas[0]), get<1>(ferramentasEscaneadas[0]), matriz);
 		destinoFerramenta = true;
 	}
-	if(fabricas.size() == 1){
-		uniform_int_distribution<int> distribution(0, matriz.size() - 1);
-		definirDestino(distribution(geradorRandom), distribution(geradorRandom), matriz);
-	}
-	if(caminho.empty() and !fabricas.empty()){
+	if(caminho.empty()){
 	       	irParaFabrica(matriz);
 	}
-	if(caminho.size() < 2 and ferramentasEscaneadas.empty()){
+	if(caminho.size() < 2 and ferramentasEscaneadas.empty() and !fabricas.empty){
 		calcDistanciaFabricas();
 		definirDestino(get<0>(fabricas[fabricas.size() - 1]), get<1>(fabricas[fabricas.size() - 1]), matriz);
 	} 
