@@ -33,6 +33,7 @@ Robo::Robo(int x, int y){
     this->yAtual = y;
     this->custoAtual = 0;
     this->raio = 4;
+    this->escolhasRealizadas = 0;
     this->destinoFerramenta = false;
     this->jaInvertido = false;
     this->geradorRandom = mt19937(random_device{}());
@@ -85,8 +86,8 @@ void Robo::criarPontosInteresse(vector<vector<int>> &matriz){
 	/* for(int i = 0; i < matriz.size()/(raio*4); i++) */	
 	/* 	for(int j = 0; j < matriz.size()/(raio*4); j++) */	
 	/* 		pontosInteresse.push_back(make_tuple((i * raio * 4) + raio + (i < matriz.size() % (4 * raio) ? 1 : 0), (j * raio * 4) + raio + (j < matriz.size() % (4 * raio) ? 1 : 0), 0)); */	
-	for(int i = 0; i < pontosInteresse.size(); i++) cout << get<0>(pontosInteresse[i]) << " " << get<1>(pontosInteresse[i]) << " ";
-	cout << endl;
+	/* for(int i = 0; i < pontosInteresse.size(); i++) cout << get<0>(pontosInteresse[i]) << " " << get<1>(pontosInteresse[i]) << " "; */
+	/* cout << endl; */
 }
 
 void Robo::ordenarPontosInteresse(){
@@ -106,7 +107,7 @@ void Robo::pontoInteresseVisitado(){
 }
 
 void Robo::escolherDestino(vector<vector<int>> &matriz){
-	printf("pss: %d\n", pontosInteresse.size());
+	/* printf("pss: %d\n", pontosInteresse.size()); */
 	if(ferramentasEscaneadas.empty()){
 		calcDistanciaFabricas();
 	       	for(int i = 0; i < fabricas.size(); i++) 
@@ -116,7 +117,7 @@ void Robo::escolherDestino(vector<vector<int>> &matriz){
 			}
 	}
 	if(!ferramentasEscaneadas.empty() and !destinoFerramenta){
-		cout << get<0>(ferramentasEscaneadas[0]) << " " << get<1>(ferramentasEscaneadas[0]) << endl;
+		/* cout << get<0>(ferramentasEscaneadas[0]) << " " << get<1>(ferramentasEscaneadas[0]) << endl; */
 		vector<tuple<int, int, float>>::iterator i;
 		for(i = ferramentasEscaneadas.begin(); i != ferramentasEscaneadas.end(); i++) 
 			get<2>(*i) = calcDistancia(xAtual, yAtual, get<0>(*i), get<1>(*i));
@@ -129,10 +130,8 @@ void Robo::escolherDestino(vector<vector<int>> &matriz){
 			}
 		}
 		definirDestino(get<0>(ferramentasEscaneadas[0]), get<1>(ferramentasEscaneadas[0]), matriz);
+		escolhasRealizadas++;
 		destinoFerramenta = true;
-	}
-	if(caminho.empty() and !fabricas.empty() and !destinoFerramenta){
-	       	irParaFabrica(matriz);
 	}
 	if(caminho.size() < 2 and ferramentasEscaneadas.empty() and !fabricas.empty()){
 		calcDistanciaFabricas();
@@ -140,17 +139,23 @@ void Robo::escolherDestino(vector<vector<int>> &matriz){
 			/* printf("") */
 			ordenarPontosInteresse();
 			definirDestino(get<0>(pontosInteresse[0]), get<1>(pontosInteresse[0]), matriz);
+			escolhasRealizadas++;
 		}else{
 			if(!jaInvertido){
 				definirDestino(get<0>(fabricas[fabricas.size() - 1]), get<1>(fabricas[fabricas.size() - 1]), matriz);
+				escolhasRealizadas++;
 				jaInvertido = true;
 			}else{
 				ordenarPontosInteresse();
 				definirDestino(get<0>(pontosInteresse[0]), get<1>(pontosInteresse[0]), matriz);
+				escolhasRealizadas++;
 				jaInvertido = false;
 			}
 		}
 	} 
+	if(caminho.empty() and !fabricas.empty() and !destinoFerramenta){
+	       	irParaFabrica(matriz);
+	}
 }
 
 stack<int> Robo::aEstrela(int xDest, int yDest, vector<vector<int>> &matriz){
@@ -225,6 +230,7 @@ void Robo::irParaFabrica(vector<vector<int>> &matriz, int i){
 			}
 	}
 	caminho = aEstrela(get<0>(fabricas[0]), get<1>(fabricas[0]), matriz);
+	escolhasRealizadas++;
 }
 
 void Robo::mover(int &x, int &y, int direcao){
@@ -258,9 +264,18 @@ void Robo::seguirCaminho(vector<vector<int>> &matriz){
 		if(!fabricas.empty()){
 		       	destinoFerramenta = false;
 			escolherDestino(matriz);
+		}else{
+			printf("nos expandidos: %d\n", nosExpandidos);
+			printf("destinos escolhidos: %d\n", escolhasRealizadas);
+			printf("movimentos realizados: %d\n", qtdMovimentos);
+			printf("custo total: %d\n", custoAtual);
+			finalizado = true;
 		}
-		printf("nos expandidos: %d\n", nosExpandidos);
 	}
+}
+
+bool Robo::finalizou(){
+	return this->finalizado;
 }
 
 void Robo::adicionarMovimento(int direcao){

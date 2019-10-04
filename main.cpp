@@ -81,7 +81,8 @@ int main(int argc, char **argv){
 		robo.seguirCaminho(matriz);		
 		
 		/* robo.calcDistanciaFabricas(); */
-		robo.relatorioCusto();
+		/* robo.relatorioCusto(); */
+		if(robo.finalizou()) window.close();
 		/* std::this_thread::sleep_for(std::chrono::milliseconds(300)); */
 	}	
 

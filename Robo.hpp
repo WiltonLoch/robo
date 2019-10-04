@@ -36,7 +36,9 @@ class Robo{
 	int custoAtual;
 	int raio;
 	bool destinoFerramenta;
+	bool finalizado;
 	int qtdMovimentos;
+	int escolhasRealizadas;
 	int nosExpandidos;
 	bool jaInvertido;
 	stack<int> caminho;
@@ -63,6 +65,7 @@ class Robo{
 	void seguirCaminho(vector<vector<int>> &matriz);
 	stack<int> aEstrela(int xDest, int yDest, vector<vector<int>> &matriz);
 	
+	bool finalizou();
 	bool jaEscaneada(int x, int y);
 	void ordenarPontosInteresse();
 	void pontoInteresseVisitado();
