@@ -36,8 +36,9 @@ class Robo{
 	int custoAtual;
 	int raio;
 	bool destinoFerramenta;
-	bool atendimento;
 	int qtdMovimentos;
+	int nosExpandidos;
+	bool jaInvertido;
 	stack<int> caminho;
 	vector<int> ferramentasFaltando;
 	vector<tuple<int, int, float>> ferramentasEscaneadas;
