@@ -63,7 +63,8 @@ class Robo{
 	
 	bool jaEscaneada(int x, int y);
 
-	bool escanear(vector<vector<int>> &matriz);
+	//bool escanear(vector<vector<int>> &matriz);
+	void escanear(vector<vector<int>> &matriz);
 	
 	void setPedido(int indFabrica, int qtdFerramentas);
 

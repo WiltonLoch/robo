@@ -48,7 +48,8 @@ int Robo::getY(){
 	return this->yAtual;
 }
 
-bool Robo::escanear(vector<vector<int>> &matriz){
+//bool Robo::escanear(vector<vector<int>> &matriz){
+void Robo::escanear(vector<vector<int>> &matriz){
 	int soma_vizinhos = 0;
 	int limite_inferior_x = (xAtual - raio >= 0 ? -raio : 0); 
 	int limite_superior_x = (xAtual + raio + 1 < matriz.size() ? raio + 1 : matriz.size() - xAtual);
@@ -101,7 +102,7 @@ void Robo::escolherDestino(vector<vector<int>> &matriz){
 	if(caminho.empty()){
 	       	irParaFabrica(matriz);
 	}
-	if(caminho.size() < 2 and ferramentasEscaneadas.empty() and !fabricas.empty){
+	if(caminho.size() < 2 and ferramentasEscaneadas.empty() and !fabricas.empty()){
 		calcDistanciaFabricas();
 		definirDestino(get<0>(fabricas[fabricas.size() - 1]), get<1>(fabricas[fabricas.size() - 1]), matriz);
 	} 
