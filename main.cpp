@@ -65,6 +65,7 @@ int main(int argc, char **argv){
 	robo.setPedido(3, 5);
 	robo.setPedido(4, 2);
 	/* robo.definirDestino(1, 1, matriz); */
+	robo.criarPontosInteresse(matriz);
 	robo.irParaFabrica(matriz);
 
 	sf::RenderWindow window(sf::VideoMode(TAMANHO_JANELA, TAMANHO_JANELA), "Robo");   

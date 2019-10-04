@@ -42,6 +42,7 @@ class Robo{
 	stack<int> caminho;
 	vector<int> ferramentasFaltando;
 	vector<tuple<int, int, float>> ferramentasEscaneadas;
+	vector<tuple<int, int, float>> pontosInteresse;
 	vector<bool> fabricasAtendidas;
 	vector<tuple<int, int, int, float>> fabricas;
         mt19937 geradorRandom;
@@ -63,6 +64,9 @@ class Robo{
 	stack<int> aEstrela(int xDest, int yDest, vector<vector<int>> &matriz);
 	
 	bool jaEscaneada(int x, int y);
+	void ordenarPontosInteresse();
+	void pontoInteresseVisitado();
+	void criarPontosInteresse(vector<vector<int>> &matriz);
 
 	//bool escanear(vector<vector<int>> &matriz);
 	void escanear(vector<vector<int>> &matriz);
