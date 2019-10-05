@@ -41,15 +41,136 @@
 %  Nos dois casos, o autor deve tomar cuidado para que o resumo (e o abstract)
 %  não ultrapassem 10 linhas cada, sendo que ambos devem estar na primeira
 %  página do artigo.
-O presente trabalho realizado como parte da disciplina de Inteligência Artificial
-% realiza uma revisão bibliográfica dos de algoritmos de agrupamento(clustering). São descritas as diferentes abordagens que acercam os algoritmos de clustering e uma implementação baseada em grid é apresentada, bem como a metodologia utilizada e resultados obtidos.
+O presente trabalho realizado como parte da disciplina de Inteligência Artificial propõe uma implementação de um sistema de navegação automática de um robô responsável por diferentes manutenções em unidades fabris, utilizando o algoritmo A* para calcular o custo da rota. 
 \end{resumo}
 
 \section{Introdução} \label{sec:Introducao}
+Esse trabalho propõe uma implementação de um sistema de navegação automática de um robô responsável por diferentes manutenções em unidades fabris.
+%
+As únicas informações que o robô possui são a informações da posição das fábricas, quantas e quais ferramentas cada uma delas necessita.
+%
+As ferramentas estão espalhadas no ambiente e o robô não possui informação quanto a localização.
+Tipos de ferramentas existentes no sistema:
+\begin{itemize}
+	\item Bateria de carga elétrica
+	\item Braço de solda;
+	\item Bomba de sucção;
+	\item Dispositivo de refrigeração;
+	\item Braço pneumático;
+\end{itemize}
 
+%
+O robô possui um alcance máximo de 4 regiões adjacentes em todas as direções com o qual analisa o ambiente a fim de obter as informações do terreno e do que está sobre ele.
+%
+O robô somente se desloca na vertical e na horizontal
+%
+O ambiente é representado por uma matriz 42 x 42
+%
+O ambiente é configurável por arquivo de entrada
+%
+A posição inicial do robô e das fábricas são configuráveis por um arquivo de entrada
+%
+O robô identifica o tipo de ferramenta quando ela entra no alcance do radar e se ele já possui tal ferramenta
+Caso mais de uma ferramenta apareça no radar, o robô deve calcular o caminho até cada uma delas e se desloca até a mais próxima
+%
+As ferramentas apesar de serem dispostas de forma aleatória, estão sempre localizadas em terrenos de custo 1. 
+%
+O programa exibe o custo do caminho percorrido pelo agente enquanto ele se movimenta pelo mapa e também o custo final ao terminar a execução
+%
+Obstáculos podem ser inseridos ou removidos durante a configuração do ambiente.
+
+Total de cada tipo de ferramenta:
+\begin{itemize}
+	\item 20 baterias de carga elétrica;
+	\item 10 braços de solda;
+	\item 8 bombas de sucção;
+	\item 6 dispositivos de refrigeração;
+	\item 4 braços pneumáticos;
+\end{itemize}
+
+Tipos de fábricas e suas necessidades:
+\begin{itemize}
+	\item Indústria de melhoramento genético de grãos, necessita de 8 baterias de carga elétrica;
+	\item Empresa de manutenção de cascos de embarcações, necessita de 5 braços de solda;
+	\item Indústria petrolífera com dutos entupidos, necessita de 2 bombas de sucção;
+	\item Fábrica de fundição, necessita de 5 dispositivos de refrigeração;
+	\item Indústria de vigas de aço, necessita de 2 braços pneumáticos;
+\end{itemize}
+
+Os tipos de terrenos que compõem o ambiente, suas respectivas cores e custos:
+\begin{itemize}
+	\item Sólido e plano (verde) – Custo: 1
+	\item Montanhoso (marrom) – Custo: 5
+	\item Pântano (azul) – Custo: 10
+	\item Árido (vermelho) – Custo: 15
+	\item Obstáculo (preto) – Intransponível
+\end{itemize}
+
+%O trabalho consiste em implementar um sistema de navegação automática de um robô que realiza
+%diferentes manutenções em unidades fabris. Para isto, deve-se utilizar o algoritmo de busca A* para
+%o cálculo do custo da rota.
+%
+%O robô tem a informação da posição das fábricas a serem realizadas as manutenções, mas está
+%desprovido de ferramentas para realizá-las. As ferramentas estão dispersas no ambiente e o robô
+%deve capturá-las utilizando seu radar para poder se dirigir para a fábrica. Ou seja, o agente não tem
+%a informação da localidade das ferramentas e só pode realizar a manutenção se possuir a ferramenta
+%necessária.
+%Existem 5 tipos de ferramentas dispersas no ambiente:
+%• Bateria de carga elétrica;
+%• Braço de solda;
+%• Bomba de sucção;
+%• Dispositivo de refrigeração;
+%• Braço pneumático.
+%A posição inicial das ferramentas é desconhecida. O agente deve utilizar seu radar para localizá-las.
+%O radar possui um alcance máximo de 4 regiões adjacentes em todas as direções. 
+
+
+%O total de cada tipo de ferramenta é o seguinte:
+%• 20 baterias de carga elétrica;
+%• 10 braços de solda;
+%• 8 bombas de sucção;
+%• 6 dispositivos de refrigeração;
+%• 4 braços pneumáticos.
+%Existem 5 tipos de fábricas que necessitam manutenção e que se relacionam com as ferramentas:
+%• Indústria de melhoramento genético de grãos com falta de energia elétrica nas incubadoras.
+%Necessita de 8 baterias;
+%• Empresa de manutenção de cascos de embarcações. Necessita de 5 braços de solda;
+%• Indústria petrolífera com dutos entupidos. Necessita de 2 bombas;
+%• Fábrica de fundição com superaquecimento nas caldeiras. Necessita de 5 refrigeradores;
+%• Indústria de vigas de aço com falta de braços mecânicos para moldagem. Necessita de 2
+%braços pneumáticos.
+%O ambiente por onde o robô vai navegar, representado através de uma matriz n x n, é formado por
+%diversos tipos de terrenos e em cada tipo de terreno o robô tem um grau de dificuldade diferente
+%para andar. A Figura 1 mostra o ambiente a ser explorado pelo robô. Por exemplo, o robô consegue
+%passar facilmente por um terreno sólido e plano, porem terá dificuldades para andar em um terreno
+%montanhoso ou em um pântano.
+%Os tipos de terrenos que compõem o ambiente são (ver cores na Figura 2):
+%• Sólido e plano (verde) – Custo: 1
+%• Montanhoso (marrom) – Custo: 5
+%• Pântano (azul) – Custo: 10
+%• Árido (vermelho) – Custo: 15
+%• Obstáculo (preto) – Intransponível
 \section{Metodologia de Desenvolvimento} \label{sec:Desenvolv}
-	
+	Tem a classe robô, lá que acontece tudo.
+A função seguir caminho
+	 é a que faz ele propriamente caminhar
+	 e é lá também que são chamados outros funções pra verificar se na nova posição dele(a que ele acabou de se mexer) é possível pegar uma ferramenta ou atender uma fábrica. 
+	 
+	 Dentro de seguir caminho também é que é chamado a função escolherDestino que é como se fosse o cérebro do robô pra tomar as decisões sobre pra onde ir. 
+	 
+	 O caminho do robô é representado por uma pilha de direções (0 a 3 no sentido horário) que são desempilhadas uma a uma pra que o robô possa realizar um movimento. 
+	 Toda vez que é definido que o robô deve ir para uma fábrica, ferramenta ou qualquer outro destino ele executa o aEstrela da posição atual até naquele ponto. 
+	 
+	 As ferramentas encontradas são subtraídas da quantidade faltando até que chegue em zero. 
+	 
+	 O cérebro do robô em si funciona assim: 
+	 	Se não há ferramentas escaneadas e ainda nenhuma fábrica pode ser atendida, vá para a fábrica mais próxima. 		
+	 	Se uma ferramenta for escaneada e ainda não há ferramentas suficientes daquele tipo, vá até a ferramenta e pegue-a. 
+	 	Se estiver muito próximo (2 de distância) de uma fábrica que ainda não pode ser atendida e não houver ferramentas escaneadas, vá para a fábrica mais distante. 
+	 	Se muito próximo do destino do passo anterior(fábrica mais distante) e não houver ferramentas escaneadas, vá para um ponto de interesse.
+	 	Pontos de interesse são basicamente pontos próximos da borda do mapa em posições distintas.
 \section{Descrição de Experimentos/Simulações e Resultados Obtidos} \label{sec:DescExp}
+Realizadas 20 execuções consecutivas, cujos resultados foram armazenados em arquivos para posterior análise.
 
 \section{Análise dos resultados obtidos} \label{sec:Results}
 \begin{table}[h]
