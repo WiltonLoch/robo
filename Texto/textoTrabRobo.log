@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2019.8.23)  6 OCT 2019 09:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2019.8.23)  6 OCT 2019 10:41
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -613,64 +613,58 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/it' tried instead on input line 37.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <13> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 48.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 56.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 57.
 
 (/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 56.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 57.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<imagens/terreno.png, id=16, 1111.15125pt x 1050.92625pt>
+<imagens/terreno.png, id=18, 1111.15125pt x 1050.92625pt>
 File: imagens/terreno.png Graphic file (type png)
 <use imagens/terreno.png>
-Package pdftex.def Info: imagens/terreno.png  used on input line 136.
+Package pdftex.def Info: imagens/terreno.png  used on input line 138.
 (pdftex.def)             Requested size: 213.39568pt x 201.82686pt.
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 137.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 139.
 
  (/usr/share/texmf-dist/tex/latex/psnfss/ot1phv.fd
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 137.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 139.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
+[2 <./imagens/terreno.png>]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 No file textoTrabRobo.bbl.
-[2 <./imagens/terreno.png>] [3] (./textoTrabRobo.aux) ) 
+[3] [4] (./textoTrabRobo.aux) ) 
 Here is how much of TeX's memory you used:
- 15363 strings out of 492623
- 289536 string characters out of 6135669
- 354733 words of memory out of 5000000
- 18954 multiletter control sequences out of 15000+600000
+ 15371 strings out of 492623
+ 289868 string characters out of 6135669
+ 353733 words of memory out of 5000000
+ 18962 multiletter control sequences out of 15000+600000
  21707 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,10n,48p,942b,498s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf-dist/f
-onts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
-sr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type
-1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvb8a
-.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-
-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/t
-imes/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on textoTrabRobo.pdf (3 pages, 2316384 bytes).
+ 55i,10n,48p,846b,499s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.e
+nc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/s
+hare/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts
+/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utm
+b8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/te
+xmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/ur
+w/times/utmri8a.pfb>
+Output written on textoTrabRobo.pdf (4 pages, 2333514 bytes).
 PDF statistics:
- 61 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 72 PDF objects out of 1000 (max. 8388607)
+ 51 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  18 words of extra memory for PDF output out of 10000 (max. 10000000)
 

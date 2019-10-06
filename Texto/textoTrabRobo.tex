@@ -23,8 +23,8 @@
 \address{Departamento de Ciência da Computação\\
   Universidade do Estado de Santa Catarina (UDESC) -- Joinville, SC -- Brasil
   \email{gustavo.neves@yandex.com, wilton.loch@hotmail.com.br}
-}
-
+}	
+				
 
 \begin{document} 
 
@@ -42,7 +42,7 @@
 %  Nos dois casos, o autor deve tomar cuidado para que o resumo (e o abstract)
 %  não ultrapassem 10 linhas cada, sendo que ambos devem estar na primeira
 %  página do artigo.
-O presente trabalho realizado como parte da disciplina de Inteligência Artificial propõe uma implementação de um sistema de navegação automática de um robô responsável por diferentes manutenções em unidades fabris, utilizando o algoritmo A* para calcular o custo da rota. 
+O presente trabalho realizado como parte da disciplina de Inteligência Artificial propõe uma implementação de um sistema de navegação automática de um robô responsável por diferentes manutenções em unidades fabris, utilizando o algoritmo $A^{*}$ para calcular o custo da rota, exibindo o custo do caminho percorrido pelo robô enquanto ele se movimenta pelo mapa e também o custo final ao terminar a execução.
 \end{resumo}
 
 \section{Introdução} \label{sec:Introducao}
@@ -51,7 +51,8 @@ Esse trabalho propõe uma implementação de um sistema de navegação automáti
 As únicas informações que o robô possui são a informações da posição das fábricas, quantas e quais ferramentas cada uma delas necessita.
 %
 As ferramentas estão espalhadas no ambiente e o robô não possui informação quanto a localização.
-Tipos de ferramentas existentes no sistema:
+
+\textbf{Tipos de ferramentas existentes no sistema:}
 \begin{itemize}
 	\item Bateria de carga elétrica
 	\item Braço de solda;
@@ -60,27 +61,29 @@ Tipos de ferramentas existentes no sistema:
 	\item Braço pneumático;
 \end{itemize}
 
+\textbf{Características do robô:}
+\begin{itemize}
+	\item Possui um alcance máximo de 4 regiões adjacentes em todas as direções com o qual analisa o ambiente a fim de obter as informações do terreno e do que está sobre ele
+	\item Somente se desloca na vertical e na horizontal
+	\item A posição inicial é configurável por um arquivo de entrada
+	\item Representado no ambiente por: \tikz\draw[black,fill=white] (0,0) rectangle (0.35,0.35);
+\end{itemize}
 %
-O robô possui um alcance máximo de 4 regiões adjacentes em todas as direções com o qual analisa o ambiente a fim de obter as informações do terreno e do que está sobre ele.
+%O robô possui um alcance máximo de 4 regiões adjacentes em todas as direções com o qual analisa o ambiente a fim de obter as informações do terreno e do que está sobre ele.
 %
-O robô somente se desloca na vertical e na horizontal
+%O robô somente se desloca na vertical e na horizontal
 %
-O ambiente é representado por uma matriz 42 x 42
+%O ambiente é configurável por arquivo de entrada
 %
-O ambiente é configurável por arquivo de entrada
+%A posição inicial do robô e das fábricas são configuráveis por um arquivo de entrada
 %
-A posição inicial do robô e das fábricas são configuráveis por um arquivo de entrada
+%As ferramentas apesar de serem dispostas de forma aleatória, estão sempre localizadas em terrenos de custo 1. 
 %
-O robô identifica o tipo de ferramenta quando ela entra no alcance do radar e se ele já possui tal ferramenta
-Caso mais de uma ferramenta apareça no radar, o robô deve calcular o caminho até cada uma delas e se desloca até a mais próxima
+%O programa exibe o custo do caminho percorrido pelo agente enquanto ele se movimenta pelo mapa e também o custo final ao terminar a execução
 %
-As ferramentas apesar de serem dispostas de forma aleatória, estão sempre localizadas em terrenos de custo 1. 
-%
-O programa exibe o custo do caminho percorrido pelo agente enquanto ele se movimenta pelo mapa e também o custo final ao terminar a execução
-%
-Obstáculos podem ser inseridos ou removidos durante a configuração do ambiente.
+%Obstáculos podem ser inseridos ou removidos durante a configuração do ambiente.
 
-Total de cada tipo de ferramenta e suas cores de representação no ambiente:
+\textbf{Total de cada tipo de ferramenta e suas cores de representação no ambiente:}
 \begin{itemize}
 	\item 20 baterias de carga elétrica - \tikz\draw[red,fill=red] (0,0) circle (.5ex); 
 	\item 10 braços de solda - \tikz\draw[yellow,fill=yellow] (0,0) circle (.5ex);
@@ -89,7 +92,7 @@ Total de cada tipo de ferramenta e suas cores de representação no ambiente:
 	\item 4 braços pneumáticos - \tikz\draw[blue,fill=blue] (0,0) circle (.5ex);
 \end{itemize}
 
-Tipos de fábricas, suas necessidades e suas cores de representação no ambiente:
+\textbf{Tipos de fábricas, suas necessidades e suas cores de representação no ambiente:}
 \begin{itemize}
 	\item Indústria de melhoramento genético de grãos, necessita de 8 baterias de carga elétrica - \tikz\draw[red,fill=red] (0,0) rectangle (0.35,0.35);
 	\item Empresa de manutenção de cascos de embarcações, necessita de 5 braços de solda - \tikz\draw[yellow,fill=yellow] (0,0) rectangle (0.35,0.35);
@@ -117,19 +120,18 @@ Tipos de fábricas, suas necessidades e suas cores de representação no ambient
 %O radar possui um alcance máximo de 4 regiões adjacentes em todas as direções. 
 
 \section{Metodologia de Desenvolvimento} \label{sec:Desenvolv}
-A linguagem utilizada na implementação foi C++, por sua robustez, variedade de ferramentas e desempenho. Para representação gráfica dos componentes(robô, ferramentas e fabricas) foi utilizada a biblioteca SFML, que oferece uma plataforma simplificada para o uso de gráficos em duas dimensões. O ambiente é representado por uma matriz 42 x 42.
+A linguagem utilizada na implementação foi C++, por sua robustez, variedade de ferramentas e desempenho. Para representação gráfica dos componentes(robô, ferramentas e fabricas) foi utilizada a biblioteca SFML, que oferece uma plataforma simplificada para o uso de gráficos em duas dimensões. O ambiente é representado por uma matriz 42 x 42 e é configurável por arquivo de entrada.
 %
-tal que, 
+Tal que:
 
-Os tipos de terrenos que compõem o ambiente, suas respectivas cores e custos:
+\textbf{Os tipos de terrenos que compõem o ambiente, suas respectivos custos e cores:}
 \begin{itemize}
-	\item Sólido e plano (verde) – Custo: 1
-	\item Montanhoso (marrom) – Custo: 5
-	\item Pântano (azul) – Custo: 10
-	\item Árido (vermelho) – Custo: 15
-	\item Obstáculo (preto) – Intransponível
+	\item Sólido e plano – Custo: 1 - \tikz\draw[black,fill={rgb,255:red,146; green,208; blue,80}] (0,0) rectangle (0.35,0.35);
+	\item Montanhoso – Custo: 5 - \tikz\draw[black,fill={rgb,255:red,148; green,138; blue,84}] (0,0) rectangle (0.35,0.35);
+	\item Pântano – Custo: 10 - \tikz\draw[black,fill={rgb,255:red,84; green,141; blue,212}] (0,0) rectangle (0.35,0.35);
+	\item Árido – Custo: 15 - \tikz\draw[black,fill={rgb,255:red,227; green,108; blue,10}] (0,0) rectangle (0.35,0.35);
+	\item Obstáculo – Intransponível - \tikz\draw[black,fill=black] (0,0) rectangle (0.35,0.35);
 \end{itemize}
-
 
 \begin{figure}[ht]
 \centering
@@ -137,18 +139,7 @@ Os tipos de terrenos que compõem o ambiente, suas respectivas cores e custos:
 \caption{Ambiente explorado pelo robô}
 \label{fig:ambiente}
 \end{figure}
-%
-%	grid[robo.getX()][robo.getY()].setFillColor(sf::Color::White);
-%	grid[robo.getX()][robo.getY()].setPosition(robo.getY()*cellSize.x, robo.getX()*cellSize.y);
-%	window.draw(grid[robo.getX()][robo.getY()]);
-%	window.display();
-%
-%
-%
-%
-%
-% Ainda no grid, a representação de um espaço vazio é dada pelo número zero em uma determinada célula, enquanto a existência de um item naquelas coordenadas é dada pelo número um. Os agentes são representados por objetos instanciados de uma classe que descreve as formigas e estes atuam sobre o \textit{grid} de modo a movimentar os itens da forma especificada. A movimentação das formigas é puramente randômica. Foi testada também uma forma de movimentação baseada em probabilidades distintas de movimentação perante a existência ou não de itens nas possíveis direções de caminhada, porém esta abordagem não obteve vantagens experimentais sobre a anterior nem afetou positivamente a convergência da solução. Não foi implementada nenhuma forma de memória para os agentes, desta forma eles simplesmente caminham pelo \textit{grid} enquanto tratam probabilidades de pegar e de soltar os itens.
-%
+
 %	Tem a classe robô, lá que acontece tudo.
 %A função seguir caminho
 %	 é a que faz ele propriamente caminhar
@@ -156,11 +147,19 @@ Os tipos de terrenos que compõem o ambiente, suas respectivas cores e custos:
 %	 
 %	 Dentro de seguir caminho também é que é chamado a função escolherDestino que é como se fosse o cérebro do robô pra tomar as decisões sobre pra onde ir. 
 %	 
-%	 O caminho do robô é representado por uma pilha de direções (0 a 3 no sentido horário) que são desempilhadas uma a uma pra que o robô possa realizar um movimento. 
-%	 Toda vez que é definido que o robô deve ir para uma fábrica, ferramenta ou qualquer outro destino ele executa o aEstrela da posição atual até naquele ponto. 
 %	 
-%	 As ferramentas encontradas são subtraídas da quantidade faltando até que chegue em zero. 
-%	 
+\textbf{O algoritmo de decisão do robô funciona da seguinte forma:}
+\begin{itemize}
+	\item Se não há ferramentas escaneadas e ainda nenhuma fábrica pode ser atendida, vá para a fábrica mais próxima
+	\item Se uma ferramenta for escaneada e ainda não há ferramentas suficientes daquele tipo, vá até a ferramenta e pegue-a
+	\item Se estiver muito próximo (2 unidades de distância) de uma fábrica que ainda não pode ser atendida e não houver ferramentas escaneadas, vá para a fábrica mais distante
+	\item Se muito próximo do destino do passo anterior(fábrica mais distante) e não houver ferramentas escaneadas, vá para um ponto de interesse(pontos próximos da borda do mapa em posições distintas)
+\end{itemize}
+
+O caminho do robô é representado por uma pilha de direções (0 a 3 no sentido horário) que são desempilhadas uma a uma para que o robô possa realizar um movimento. 
+Toda vez que é definido que o robô deve ir para uma fábrica, ferramenta ou qualquer outro destino ele executa o $A^{*}$ da posição atual até o ponto desejado. 
+As ferramentas encontradas são subtraídas da quantidade faltando até que chegue em zero. 
+
 %	 O cérebro do robô em si funciona assim: 
 %	 	Se não há ferramentas escaneadas e ainda nenhuma fábrica pode ser atendida, vá para a fábrica mais próxima. 		
 %	 	Se uma ferramenta for escaneada e ainda não há ferramentas suficientes daquele tipo, vá até a ferramenta e pegue-a. 
