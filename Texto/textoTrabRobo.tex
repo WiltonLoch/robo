@@ -8,6 +8,7 @@
 \usepackage{amsmath}
 \usepackage{xcolor}
 \usepackage{pbox}
+\usepackage{tikz}
 
 \newcommand{\lembrete}[1]{{\color{blue}{#1}}}
 
@@ -79,31 +80,22 @@ O programa exibe o custo do caminho percorrido pelo agente enquanto ele se movim
 %
 Obstáculos podem ser inseridos ou removidos durante a configuração do ambiente.
 
-Total de cada tipo de ferramenta:
+Total de cada tipo de ferramenta e suas cores de representação no ambiente:
 \begin{itemize}
-	\item 20 baterias de carga elétrica;
-	\item 10 braços de solda;
-	\item 8 bombas de sucção;
-	\item 6 dispositivos de refrigeração;
-	\item 4 braços pneumáticos;
+	\item 20 baterias de carga elétrica - \tikz\draw[red,fill=red] (0,0) circle (.5ex); 
+	\item 10 braços de solda - \tikz\draw[yellow,fill=yellow] (0,0) circle (.5ex);
+	\item 8 bombas de sucção - \tikz\draw[magenta,fill=magenta] (0,0) circle (.5ex);
+	\item 6 dispositivos de refrigeração - \tikz\draw[cyan,fill=cyan] (0,0) circle (.5ex);
+	\item 4 braços pneumáticos - \tikz\draw[blue,fill=blue] (0,0) circle (.5ex);
 \end{itemize}
 
-Tipos de fábricas e suas necessidades:
+Tipos de fábricas, suas necessidades e suas cores de representação no ambiente:
 \begin{itemize}
-	\item Indústria de melhoramento genético de grãos, necessita de 8 baterias de carga elétrica;
-	\item Empresa de manutenção de cascos de embarcações, necessita de 5 braços de solda;
-	\item Indústria petrolífera com dutos entupidos, necessita de 2 bombas de sucção;
-	\item Fábrica de fundição, necessita de 5 dispositivos de refrigeração;
-	\item Indústria de vigas de aço, necessita de 2 braços pneumáticos;
-\end{itemize}
-
-Os tipos de terrenos que compõem o ambiente, suas respectivas cores e custos:
-\begin{itemize}
-	\item Sólido e plano (verde) – Custo: 1
-	\item Montanhoso (marrom) – Custo: 5
-	\item Pântano (azul) – Custo: 10
-	\item Árido (vermelho) – Custo: 15
-	\item Obstáculo (preto) – Intransponível
+	\item Indústria de melhoramento genético de grãos, necessita de 8 baterias de carga elétrica - \tikz\draw[red,fill=red] (0,0) rectangle (0.35,0.35);
+	\item Empresa de manutenção de cascos de embarcações, necessita de 5 braços de solda - \tikz\draw[yellow,fill=yellow] (0,0) rectangle (0.35,0.35);
+	\item Indústria petrolífera com dutos entupidos, necessita de 2 bombas de sucção - \tikz\draw[magenta,fill=magenta] (0,0) rectangle (0.35,0.35);
+	\item Fábrica de fundição, necessita de 5 dispositivos de refrigeração - \tikz\draw[cyan,fill=cyan] (0,0) rectangle (0.35,0.35);
+	\item Indústria de vigas de aço, necessita de 2 braços pneumáticos - \tikz\draw[blue,fill=blue] (0,0) rectangle (0.35,0.35);
 \end{itemize}
 
 %O trabalho consiste em implementar um sistema de navegação automática de um robô que realiza
@@ -124,53 +116,59 @@ Os tipos de terrenos que compõem o ambiente, suas respectivas cores e custos:
 %A posição inicial das ferramentas é desconhecida. O agente deve utilizar seu radar para localizá-las.
 %O radar possui um alcance máximo de 4 regiões adjacentes em todas as direções. 
 
-
-%O total de cada tipo de ferramenta é o seguinte:
-%• 20 baterias de carga elétrica;
-%• 10 braços de solda;
-%• 8 bombas de sucção;
-%• 6 dispositivos de refrigeração;
-%• 4 braços pneumáticos.
-%Existem 5 tipos de fábricas que necessitam manutenção e que se relacionam com as ferramentas:
-%• Indústria de melhoramento genético de grãos com falta de energia elétrica nas incubadoras.
-%Necessita de 8 baterias;
-%• Empresa de manutenção de cascos de embarcações. Necessita de 5 braços de solda;
-%• Indústria petrolífera com dutos entupidos. Necessita de 2 bombas;
-%• Fábrica de fundição com superaquecimento nas caldeiras. Necessita de 5 refrigeradores;
-%• Indústria de vigas de aço com falta de braços mecânicos para moldagem. Necessita de 2
-%braços pneumáticos.
-%O ambiente por onde o robô vai navegar, representado através de uma matriz n x n, é formado por
-%diversos tipos de terrenos e em cada tipo de terreno o robô tem um grau de dificuldade diferente
-%para andar. A Figura 1 mostra o ambiente a ser explorado pelo robô. Por exemplo, o robô consegue
-%passar facilmente por um terreno sólido e plano, porem terá dificuldades para andar em um terreno
-%montanhoso ou em um pântano.
-%Os tipos de terrenos que compõem o ambiente são (ver cores na Figura 2):
-%• Sólido e plano (verde) – Custo: 1
-%• Montanhoso (marrom) – Custo: 5
-%• Pântano (azul) – Custo: 10
-%• Árido (vermelho) – Custo: 15
-%• Obstáculo (preto) – Intransponível
 \section{Metodologia de Desenvolvimento} \label{sec:Desenvolv}
-	Tem a classe robô, lá que acontece tudo.
-A função seguir caminho
-	 é a que faz ele propriamente caminhar
-	 e é lá também que são chamados outros funções pra verificar se na nova posição dele(a que ele acabou de se mexer) é possível pegar uma ferramenta ou atender uma fábrica. 
-	 
-	 Dentro de seguir caminho também é que é chamado a função escolherDestino que é como se fosse o cérebro do robô pra tomar as decisões sobre pra onde ir. 
-	 
-	 O caminho do robô é representado por uma pilha de direções (0 a 3 no sentido horário) que são desempilhadas uma a uma pra que o robô possa realizar um movimento. 
-	 Toda vez que é definido que o robô deve ir para uma fábrica, ferramenta ou qualquer outro destino ele executa o aEstrela da posição atual até naquele ponto. 
-	 
-	 As ferramentas encontradas são subtraídas da quantidade faltando até que chegue em zero. 
-	 
-	 O cérebro do robô em si funciona assim: 
-	 	Se não há ferramentas escaneadas e ainda nenhuma fábrica pode ser atendida, vá para a fábrica mais próxima. 		
-	 	Se uma ferramenta for escaneada e ainda não há ferramentas suficientes daquele tipo, vá até a ferramenta e pegue-a. 
-	 	Se estiver muito próximo (2 de distância) de uma fábrica que ainda não pode ser atendida e não houver ferramentas escaneadas, vá para a fábrica mais distante. 
-	 	Se muito próximo do destino do passo anterior(fábrica mais distante) e não houver ferramentas escaneadas, vá para um ponto de interesse.
-	 	Pontos de interesse são basicamente pontos próximos da borda do mapa em posições distintas.
+A linguagem utilizada na implementação foi C++, por sua robustez, variedade de ferramentas e desempenho. Para representação gráfica dos componentes(robô, ferramentas e fabricas) foi utilizada a biblioteca SFML, que oferece uma plataforma simplificada para o uso de gráficos em duas dimensões. O ambiente é representado por uma matriz 42 x 42.
+%
+tal que, 
+
+Os tipos de terrenos que compõem o ambiente, suas respectivas cores e custos:
+\begin{itemize}
+	\item Sólido e plano (verde) – Custo: 1
+	\item Montanhoso (marrom) – Custo: 5
+	\item Pântano (azul) – Custo: 10
+	\item Árido (vermelho) – Custo: 15
+	\item Obstáculo (preto) – Intransponível
+\end{itemize}
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.5\textwidth]{imagens/terreno}
+\caption{Ambiente explorado pelo robô}
+\label{fig:ambiente}
+\end{figure}
+%
+%	grid[robo.getX()][robo.getY()].setFillColor(sf::Color::White);
+%	grid[robo.getX()][robo.getY()].setPosition(robo.getY()*cellSize.x, robo.getX()*cellSize.y);
+%	window.draw(grid[robo.getX()][robo.getY()]);
+%	window.display();
+%
+%
+%
+%
+%
+% Ainda no grid, a representação de um espaço vazio é dada pelo número zero em uma determinada célula, enquanto a existência de um item naquelas coordenadas é dada pelo número um. Os agentes são representados por objetos instanciados de uma classe que descreve as formigas e estes atuam sobre o \textit{grid} de modo a movimentar os itens da forma especificada. A movimentação das formigas é puramente randômica. Foi testada também uma forma de movimentação baseada em probabilidades distintas de movimentação perante a existência ou não de itens nas possíveis direções de caminhada, porém esta abordagem não obteve vantagens experimentais sobre a anterior nem afetou positivamente a convergência da solução. Não foi implementada nenhuma forma de memória para os agentes, desta forma eles simplesmente caminham pelo \textit{grid} enquanto tratam probabilidades de pegar e de soltar os itens.
+%
+%	Tem a classe robô, lá que acontece tudo.
+%A função seguir caminho
+%	 é a que faz ele propriamente caminhar
+%	 e é lá também que são chamados outros funções pra verificar se na nova posição dele(a que ele acabou de se mexer) é possível pegar uma ferramenta ou atender uma fábrica. 
+%	 
+%	 Dentro de seguir caminho também é que é chamado a função escolherDestino que é como se fosse o cérebro do robô pra tomar as decisões sobre pra onde ir. 
+%	 
+%	 O caminho do robô é representado por uma pilha de direções (0 a 3 no sentido horário) que são desempilhadas uma a uma pra que o robô possa realizar um movimento. 
+%	 Toda vez que é definido que o robô deve ir para uma fábrica, ferramenta ou qualquer outro destino ele executa o aEstrela da posição atual até naquele ponto. 
+%	 
+%	 As ferramentas encontradas são subtraídas da quantidade faltando até que chegue em zero. 
+%	 
+%	 O cérebro do robô em si funciona assim: 
+%	 	Se não há ferramentas escaneadas e ainda nenhuma fábrica pode ser atendida, vá para a fábrica mais próxima. 		
+%	 	Se uma ferramenta for escaneada e ainda não há ferramentas suficientes daquele tipo, vá até a ferramenta e pegue-a. 
+%	 	Se estiver muito próximo (2 de distância) de uma fábrica que ainda não pode ser atendida e não houver ferramentas escaneadas, vá para a fábrica mais distante. 
+%	 	Se muito próximo do destino do passo anterior(fábrica mais distante) e não houver ferramentas escaneadas, vá para um ponto de interesse.
+%	 	Pontos de interesse são basicamente pontos próximos da borda do mapa em posições distintas.
 \section{Descrição de Experimentos/Simulações e Resultados Obtidos} \label{sec:DescExp}
-Realizadas 20 execuções consecutivas, cujos resultados foram armazenados em arquivos para posterior análise.
+Realizadas 20 execuções consecutivas, cujos resultados foram armazenados em arquivos para posterior análise a fim de se obter o comportamento médio do sistema.
 
 \section{Análise dos resultados obtidos} \label{sec:Results}
 \begin{table}[h]
@@ -185,7 +183,7 @@ Realizadas 20 execuções consecutivas, cujos resultados foram armazenados em ar
 	$3^{o}$ quartil & 531.5 \\ \hline
 	Máx. & 750.0 \\ \hline
 	\end{tabular}
-	\caption{Analise custo total}
+	\caption{Análise custo total}
 	\label{tabela:custo}
 %%	
 %%"" "Min.   :322.0  "
@@ -209,7 +207,7 @@ Realizadas 20 execuções consecutivas, cujos resultados foram armazenados em ar
 	$3^{o}$ quartil & 32.25 \\ \hline
 	Máx. & 37.00 \\ \hline
 	\end{tabular}
-	\caption{Analise destinos escolhidos}
+	\caption{Análise destinos escolhidos}
 	\label{tabela:destinos}
 %%	
 %%"      V1"
@@ -235,7 +233,7 @@ Realizadas 20 execuções consecutivas, cujos resultados foram armazenados em ar
 	$3^{o}$ quartil & 459.0 \\ \hline
 	Máx. & 651.0 \\ \hline
 	\end{tabular}
-	\caption{Analise movimentos realizados}
+	\caption{Análise movimentos realizados}
 	\label{tabela:movimentos}
 %%
 %%"      V1"
@@ -261,7 +259,7 @@ Realizadas 20 execuções consecutivas, cujos resultados foram armazenados em ar
 	$3^{o}$ quartil & 14764 \\ \hline
 	Máx. & 21126 \\ \hline
 	\end{tabular}
-	\caption{Analise nós expandidos}
+	\caption{Análise nós expandidos}
 	\label{tabela:nosExpandidos}
 %%	
 %%"      V1"
